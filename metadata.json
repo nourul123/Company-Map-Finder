@@ -1,0 +1,5 @@
+{
+  "name": "Registry Domain Mapping",
+  "description": "An intelligent search tool to find detailed company information online, including registry numbers, location, and official websites, with verifiable sources provided by Gemini.",
+  "requestFramePermissions": []
+}
