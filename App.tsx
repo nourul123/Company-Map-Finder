@@ -7,6 +7,7 @@ import ResultCard from './components/ResultCard';
 
 const App: React.FC = () => {
   const [query, setQuery] = useState<string>('');
+  const [isDeepSearch, setIsDeepSearch] = useState<boolean>(false);
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
   const [sources, setSources] = useState<GroundingChunk[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,7 +24,7 @@ const App: React.FC = () => {
     setSources([]);
 
     try {
-      const result = await searchCompanyInfo(query);
+      const result = await searchCompanyInfo(query, isDeepSearch);
       setCompanyInfo(result.companyInfo);
       setSources(result.sources);
     } catch (err) {
@@ -31,7 +32,7 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [query]);
+  }, [query, isDeepSearch]);
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-200 font-sans p-4 sm:p-6 lg:p-8">
@@ -61,7 +62,7 @@ const App: React.FC = () => {
         </header>
 
         <main>
-          <div className="relative mb-6">
+          <div className="relative">
             <input
               type="text"
               value={query}
@@ -77,6 +78,19 @@ const App: React.FC = () => {
             >
               {isLoading ? 'Searching...' : 'Search'}
             </button>
+          </div>
+
+          <div className="flex items-center justify-center mt-4 mb-6">
+            <input
+              type="checkbox"
+              id="deep-search"
+              checked={isDeepSearch}
+              onChange={(e) => setIsDeepSearch(e.target.checked)}
+              className="h-4 w-4 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-600"
+            />
+            <label htmlFor="deep-search" className="ml-2 text-sm font-medium text-slate-400">
+              Enable Deep Search (more detailed, takes longer)
+            </label>
           </div>
           
           <div className="mt-8">
